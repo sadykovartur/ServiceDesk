@@ -1,6 +1,5 @@
 import {
   Alert,
-  Box,
   CircularProgress,
   FormControl,
   InputLabel,
@@ -16,12 +15,17 @@ import {
   TableRow,
   Typography
 } from "@mui/material";
-import { useState } from "react";
-
-type ViewState = "loading" | "empty" | "error" | "data";
+import { useQuery } from "@tanstack/react-query";
+import { Link as RouterLink } from "react-router-dom";
+import { getTickets } from "../api/tickets";
 
 function TicketsListPage(): JSX.Element {
-  const [viewState, setViewState] = useState<ViewState>("data");
+  const { data, isLoading, isError, error } = useQuery({
+    queryKey: ["tickets"],
+    queryFn: getTickets
+  });
+
+  const tickets = data ?? [];
 
   return (
     <Stack spacing={2}>
@@ -29,21 +33,6 @@ function TicketsListPage(): JSX.Element {
 
       <Paper sx={{ p: 2 }}>
         <Stack direction={{ xs: "column", md: "row" }} spacing={2}>
-          <FormControl size="small" sx={{ minWidth: 200 }}>
-            <InputLabel id="state-label">Stub state</InputLabel>
-            <Select
-              labelId="state-label"
-              value={viewState}
-              label="Stub state"
-              onChange={(event) => setViewState(event.target.value as ViewState)}
-            >
-              <MenuItem value="data">data</MenuItem>
-              <MenuItem value="loading">loading</MenuItem>
-              <MenuItem value="empty">empty</MenuItem>
-              <MenuItem value="error">error</MenuItem>
-            </Select>
-          </FormControl>
-
           <FormControl size="small" sx={{ minWidth: 200 }}>
             <InputLabel id="filter-status-label">Status (stub)</InputLabel>
             <Select labelId="filter-status-label" label="Status (stub)" value="all">
@@ -60,17 +49,22 @@ function TicketsListPage(): JSX.Element {
         </Stack>
       </Paper>
 
-      {viewState === "loading" && (
+      {isLoading && (
         <Stack direction="row" spacing={1} alignItems="center">
           <CircularProgress size={20} />
           <Typography>Loading tickets...</Typography>
         </Stack>
       )}
 
-      {viewState === "empty" && <Alert severity="info">No tickets yet.</Alert>}
-      {viewState === "error" && <Alert severity="error">Failed to load tickets (stub).</Alert>}
+      {isError && (
+        <Alert severity="error">
+          Failed to load tickets: {error instanceof Error ? error.message : "unknown error"}
+        </Alert>
+      )}
 
-      {viewState === "data" && (
+      {!isLoading && !isError && tickets.length === 0 && <Alert severity="info">No tickets yet.</Alert>}
+
+      {!isLoading && !isError && tickets.length > 0 && (
         <TableContainer component={Paper}>
           <Table>
             <TableHead>
@@ -83,19 +77,21 @@ function TicketsListPage(): JSX.Element {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow>
-                <TableCell>1</TableCell>
-                <TableCell>Cannot access LMS</TableCell>
-                <TableCell>New</TableCell>
-                <TableCell>High</TableCell>
-                <TableCell>IT</TableCell>
-              </TableRow>
+              {tickets.map((ticket) => (
+                <TableRow key={ticket.id} hover>
+                  <TableCell>{ticket.id}</TableCell>
+                  <TableCell>
+                    <RouterLink to={`/tickets/${ticket.id}`}>{ticket.title}</RouterLink>
+                  </TableCell>
+                  <TableCell>{ticket.status}</TableCell>
+                  <TableCell>{ticket.priority}</TableCell>
+                  <TableCell>{ticket.categoryName}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TableContainer>
       )}
-
-      <Box />
     </Stack>
   );
 }

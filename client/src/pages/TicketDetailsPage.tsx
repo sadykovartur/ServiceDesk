@@ -1,32 +1,66 @@
-import { Alert, Card, CardContent, Divider, List, ListItem, ListItemText, Stack, Typography } from "@mui/material";
-import { useState } from "react";
-
-type ViewState = "loading" | "error" | "data";
+import {
+  Alert,
+  Card,
+  CardContent,
+  CircularProgress,
+  Divider,
+  List,
+  ListItem,
+  ListItemText,
+  Stack,
+  Typography
+} from "@mui/material";
+import { useQuery } from "@tanstack/react-query";
+import { useParams } from "react-router-dom";
+import { getTicketById } from "../api/tickets";
 
 function TicketDetailsPage(): JSX.Element {
-  const [viewState] = useState<ViewState>("data");
+  const { id } = useParams();
+  const ticketId = Number(id);
 
-  if (viewState === "loading")
-  {
-    return <Typography>Loading ticket...</Typography>;
+  const { data: ticket, isLoading, isError, error } = useQuery({
+    queryKey: ["tickets", ticketId],
+    queryFn: () => getTicketById(ticketId),
+    enabled: Number.isFinite(ticketId)
+  });
+
+  if (!Number.isFinite(ticketId)) {
+    return <Alert severity="error">Ticket id is invalid.</Alert>;
   }
 
-  if (viewState === "error")
-  {
-    return <Alert severity="error">Failed to load ticket details (stub).</Alert>;
+  if (isLoading) {
+    return (
+      <Stack direction="row" spacing={1} alignItems="center">
+        <CircularProgress size={20} />
+        <Typography>Loading ticket...</Typography>
+      </Stack>
+    );
+  }
+
+  if (isError) {
+    return (
+      <Alert severity="error">
+        Failed to load ticket details: {error instanceof Error ? error.message : "unknown error"}
+      </Alert>
+    );
+  }
+
+  if (!ticket) {
+    return <Alert severity="info">Ticket not found.</Alert>;
   }
 
   return (
     <Stack spacing={2}>
-      <Typography variant="h4">Ticket #1</Typography>
+      <Typography variant="h4">Ticket #{ticket.id}</Typography>
 
       <Card>
         <CardContent>
-          <Typography variant="h6">Cannot access LMS</Typography>
-          <Typography color="text.secondary">Status: New</Typography>
-          <Typography color="text.secondary">Priority: High</Typography>
+          <Typography variant="h6">{ticket.title}</Typography>
+          <Typography color="text.secondary">Status: {ticket.status}</Typography>
+          <Typography color="text.secondary">Priority: {ticket.priority}</Typography>
+          <Typography color="text.secondary">Category: {ticket.categoryName}</Typography>
           <Typography sx={{ mt: 2 }}>
-            Student reports that LMS login returns "invalid credentials" despite password reset.
+            {ticket.description}
           </Typography>
         </CardContent>
       </Card>

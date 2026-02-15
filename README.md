@@ -38,6 +38,12 @@ npm run dev
 
 Frontend: http://localhost:5173
 
+Для подключения к API задайте `client/.env.local`:
+
+```env
+VITE_API_BASE_URL=http://localhost:8080
+```
+
 ## Запуск всего через Docker Compose (опционально)
 ```bash
 docker compose up --build
