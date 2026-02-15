@@ -1,9 +1,9 @@
-# Service Desk — учебный шаблон (React + TS + MUI / ASP.NET Core / PostgreSQL)
+# Service Desk — учебный шаблон (React + TS + MUI / ASP.NET Core Identity + JWT / PostgreSQL)
 
 Монорепо для курса "Конструирование интернет-приложений".
 Сквозной проект: система заявок (тикетов) с ролями Student/Operator/Admin.
 
-> Важно: этот архив — **стартовый каркас** (docs + infra). Код server/client предполагается
+> Этот архив — стартовый каркас (docs + infra). Код server/client предполагается
 > сгенерировать через Cursor/Codex по спецификации в `docs/course-spec.md` и лабораторным.
 
 ## Быстрый старт (после генерации кода)
@@ -42,11 +42,6 @@ Frontend: http://localhost:5173
 ```bash
 docker compose up --build
 ```
-
-## Структура
-- `docs/` — спецификация курса, методические, лабораторные
-- `server/` — ASP.NET Core Web API + EF Core (каркас + Dockerfile)
-- `client/` — Vite + React + TypeScript + MUI (каркас + Dockerfile)
 
 ## Лабораторные
 См. `docs/labs/lab01.md` ... `docs/labs/lab08.md`.

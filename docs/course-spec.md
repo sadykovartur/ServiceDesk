@@ -1,40 +1,35 @@
 # Конструирование интернет-приложений — сквозной проект Service Desk
 
 ## 0. Цель курса
-Студенты проектируют, разрабатывают и выпускают веб-приложение (интернет-приложение) по модели "сквозного проекта":
+Студенты проектируют, разрабатывают и выпускают веб-приложение по модели "сквозного проекта":
 - дизайн-спецификация (Figma)
-- backend (ASP.NET Core Web API + PostgreSQL)
+- backend (ASP.NET Core Web API + PostgreSQL + Identity + JWT)
 - frontend (React + TypeScript + MUI)
 - качество (валидация, роли/права, тесты)
 - поставка (Docker Compose, CI)
 
 ## 1. Тема проекта: Service Desk (Система заявок/тикетов)
-Система для подачи и обработки заявок (проблем/запросов) в рамках университета/кафедры:
-- студент создает заявку и ведет переписку
-- оператор берет в работу и меняет статус
-- администратор управляет справочниками и ролями
+Система для подачи и обработки заявок в рамках университета/кафедры.
 
 ## 2. Роли и права
-### Роли
+Роли (MVP):
 - Student
 - Operator
 - Admin
 
-### Права (MVP)
+Права (MVP):
 Student:
 - регистрация/вход
 - создание заявки
 - просмотр своих заявок (список + фильтры)
 - просмотр карточки заявки
 - комментарии к заявке
-- (опционально) редактирование/отмена заявки только в статусе New
 
 Operator:
-- просмотр очереди заявок (все/новые/назначенные на меня)
+- просмотр очереди заявок (новые/назначенные на меня/все)
 - назначить заявку на себя (Assign to me)
 - смена статуса по правилам
 - комментарии
-- (опционально) внутренние комментарии (видны только Operator/Admin)
 
 Admin:
 - CRUD категорий
@@ -55,15 +50,7 @@ Admin:
 - Rejected требует причины (rejectedReason).
 
 ## 4. Данные (минимальная модель)
-Сущности:
-User:
-- id (GUID)
-- email (unique)
-- passwordHash
-- fullName
-- role
-- createdAt
-
+Сущности (MVP):
 Category:
 - id
 - name
@@ -88,6 +75,11 @@ Comment:
 - text
 - isInternal (bool, optional)
 - createdAt
+
+Пользователи/роли:
+- использовать ASP.NET Core Identity (IdentityUser/IdentityRole) с хранилищем в PostgreSQL (EF Core)
+- роли: Student/Operator/Admin (seeding при старте)
+- (опционально) seed admin user через переменные окружения
 
 ## 5. UI (набор экранов)
 Публичные:
@@ -125,14 +117,16 @@ Frontend:
 
 Backend:
 - ASP.NET Core Web API
-- EF Core + provider PostgreSQL (Npgsql)
-- Migration-based DB evolution
+- EF Core + Npgsql
+- ASP.NET Core Identity Core (users + roles)
+- JWT Bearer auth
 - OpenAPI/Swagger
+- Migration-based DB evolution
 
 Quality & Delivery:
 - Docker Compose (api + db)
 - CI (GitHub Actions): build + tests + lint
-- Minimal healthcheck endpoint
+- Healthcheck endpoint (/health)
 
 ## 7. Репозиторий и структура
 Монорепо:
@@ -142,14 +136,8 @@ Quality & Delivery:
 - docker-compose.yml
 - .github/workflows/ci.yml
 
-Требования к репо:
-- README с командами запуска
-- миграции в коммите
-- единый стиль именования и структура папок
-- сдача через Pull Request
-
 ## 8. API (минимальный набор)
-Auth:
+Auth (Identity + JWT):
 - POST /api/auth/register
 - POST /api/auth/login
 - GET  /api/auth/me
@@ -179,13 +167,3 @@ Users (Admin):
 - единый формат ошибок (ProblemDetails или аналог)
 - безопасность: доступ к данным согласно ролям
 - работа через docker-compose
-
-## 10. Формат сдачи
-Для каждой лабораторной:
-- PR в репозиторий
-- чек-лист критериев выполнен
-- короткая защита: показать UI + API + данные (по теме лабы)
-
-Курсовая работа:
-- итоговый работающий проект + демонстрация
-- отчёт/презентация: архитектура, модель данных, ключевые сценарии, безопасность

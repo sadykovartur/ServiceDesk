@@ -1,28 +1,19 @@
-# Lab 06 — Аутентификация и роли (Student/Operator/Admin)
+# Lab 06 — ASP.NET Core Identity + JWT + роли
 
 ## Цель
-Реализовать login/register, защитить маршруты и эндпоинты, включить роли.
+Реализовать регистрацию/вход на основе Identity и защитить API/маршруты JWT + ролями.
 
-## Что сделать
-Backend:
-1) Реализовать регистрацию и вход (JWT или cookie-based).
-2) Добавить роли и политики доступа:
-   - Student: только свои тикеты
-   - Operator: очередь и смена статусов
-   - Admin: категории и пользователи
-3) Добавить /me endpoint.
+## Backend (минимум)
+- IdentityUser/IdentityRole + EF Core + PostgreSQL
+- Seed ролей Student/Operator/Admin
+- /api/auth/register, /api/auth/login, /api/auth/me
+- JWT Bearer auth (issuer/audience/key из config)
 
-Frontend:
-4) Страницы Login/Register.
-5) Хранение сессии (JWT): аккуратно, с logout.
-6) Protected routes и роль-зависимое меню.
+## Frontend (минимум)
+- Login/Register + хранение access token
+- Protected routes + роль-зависимое меню
 
 ## Критерии приёмки
-- 401/403 работают корректно
+- 401/403 корректно
 - Student не видит чужие тикеты
-- Operator может назначать на себя и менять статус (в UI и API)
-
-## Команды проверки
-- npm run build
-- dotnet build
-- docker compose up
+- Operator меняет статус/assign-to-me

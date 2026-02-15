@@ -1,6 +1,6 @@
 # server
 
-Здесь будет ASP.NET Core Web API + EF Core + PostgreSQL.
+Здесь будет ASP.NET Core Web API + EF Core + PostgreSQL + ASP.NET Core Identity + JWT.
 
 Рекомендуемый вывод Cursor Agent:
 - ServiceDesk.sln

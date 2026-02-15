@@ -5,25 +5,12 @@
 
 ## Что сделать
 1) Создать /client: Vite React TS проект.
-2) Подключить MUI, настроить тему (минимум: primary, background, typography).
+2) Подключить MUI, настроить тему (minimum).
 3) Подключить React Router: публичная зона + приватная зона (protected routes заглушкой).
-4) Реализовать layout:
-   - AppBar (название, меню пользователя)
-   - Drawer (пункты меню зависят от роли — пока можно заглушкой)
-5) Сверстать (без API) 2–3 страницы по Figma:
-   - Tickets List
-   - Ticket Details
-   - Create Ticket (форма заглушка)
+4) Реализовать layout: AppBar + Drawer.
+5) Сверстать (без API) 2–3 страницы по Figma: Tickets List, Ticket Details, Create Ticket.
 
 ## Критерии приёмки
 - приложение запускается
 - есть роутинг и layout
-- страницы выглядят близко к макету
 - есть состояния UI заглушками: loading/empty/error
-
-## Команды проверки
-- npm run dev
-- npm run build
-
-## Сдача
-- PR + скриншоты страниц или короткое видео (по требованиям преподавателя)

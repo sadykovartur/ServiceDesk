@@ -1,6 +1,6 @@
 services:
   db:
-    image: postgres:16
+    image: postgres:14.21
     container_name: servicedesk-db
     restart: unless-stopped
     environment:
@@ -26,6 +26,12 @@ services:
     environment:
       ASPNETCORE_ENVIRONMENT: ${ASPNETCORE_ENVIRONMENT:-Development}
       ConnectionStrings__Default: ${CONNECTIONSTRINGS__DEFAULT:-Host=db;Port=5432;Database=servicedesk;Username=postgres;Password=postgres}
+      JWT__ISSUER: ${JWT__ISSUER:-ServiceDesk}
+      JWT__AUDIENCE: ${JWT__AUDIENCE:-ServiceDesk.Client}
+      JWT__KEY: ${JWT__KEY:-CHANGE_ME_TO_A_LONG_RANDOM_SECRET}
+      JWT__EXPIRES_MINUTES: ${JWT__EXPIRES_MINUTES:-60}
+      SEED_ADMIN_EMAIL: ${SEED_ADMIN_EMAIL:-admin@example.com}
+      SEED_ADMIN_PASSWORD: ${SEED_ADMIN_PASSWORD:-Admin123!}
       ASPNETCORE_URLS: http://+:8080
     ports:
       - "8080:8080"
