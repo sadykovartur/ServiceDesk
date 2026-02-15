@@ -1,0 +1,312 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\work\\ServiceDesk\\server\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|solutionrelative:src\\servicedesk.api\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.api\\servicedesk.api.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|",
+      "RelativeMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|solutionrelative:src\\servicedesk.api\\servicedesk.api.csproj||{04B8AB82-A572-4FEF-95CE-5222444B6B64}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.api\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|solutionrelative:src\\servicedesk.api\\controllers\\ticketscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.api\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|solutionrelative:src\\servicedesk.api\\controllers\\categoriescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.domain\\entities\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|solutionrelative:src\\servicedesk.domain\\entities\\ticket.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.domain\\entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|solutionrelative:src\\servicedesk.domain\\entities\\comment.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.domain\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|solutionrelative:src\\servicedesk.domain\\entities\\category.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.domain\\enums\\ticketstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|solutionrelative:src\\servicedesk.domain\\enums\\ticketstatus.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.domain\\enums\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|solutionrelative:src\\servicedesk.domain\\enums\\role.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.domain\\enums\\priority.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{9FD889F2-A382-49B5-AEA6-AAECC96F1890}|src\\ServiceDesk.Domain\\ServiceDesk.Domain.csproj|solutionrelative:src\\servicedesk.domain\\enums\\priority.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.infrastructure\\persistence\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|solutionrelative:src\\servicedesk.infrastructure\\persistence\\applicationdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.infrastructure\\repositories\\ticketrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|solutionrelative:src\\servicedesk.infrastructure\\repositories\\ticketrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.infrastructure\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|solutionrelative:src\\servicedesk.infrastructure\\repositories\\categoryrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{7963CF97-6F17-46E4-84BF-C271E4BDF2DA}|src\\ServiceDesk.Infrastructure\\ServiceDesk.Infrastructure.csproj|solutionrelative:src\\servicedesk.infrastructure\\dependencyinjection.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|c:\\work\\servicedesk\\server\\src\\servicedesk.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{953D81B7-AEA6-4BAC-92C3-13193951DEE6}|src\\ServiceDesk.Api\\ServiceDesk.Api.csproj|solutionrelative:src\\servicedesk.api\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 12,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{3ae79031-e1bc-11d0-8f78-00a0c9110057}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{34e76e81-ee4a-11d0-ae2e-00a0c90fffc3}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{4a9b7e51-aa16-11d0-a8c5-00a0c921a4d2}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{57d563b6-44a5-47df-85be-f4199ad6b651}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:254354193:0:{71f361cc-493f-47c0-923f-f2570b6f8618}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ServiceDesk.Api",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\ServiceDesk.Api.csproj",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Api\\ServiceDesk.Api.csproj",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\ServiceDesk.Api.csproj",
+              "RelativeToolTip": "src\\ServiceDesk.Api\\ServiceDesk.Api.csproj",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-02-15T21:52:26.634Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "TicketsController.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\Controllers\\TicketsController.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Api\\Controllers\\TicketsController.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\Controllers\\TicketsController.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Api\\Controllers\\TicketsController.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAIwB8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:19.12Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "CategoriesController.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\Controllers\\CategoriesController.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Api\\Controllers\\CategoriesController.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\Controllers\\CategoriesController.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Api\\Controllers\\CategoriesController.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:15.662Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Ticket.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Entities\\Ticket.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Domain\\Entities\\Ticket.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Entities\\Ticket.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Domain\\Entities\\Ticket.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:12.084Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "Comment.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Entities\\Comment.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Domain\\Entities\\Comment.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Entities\\Comment.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Domain\\Entities\\Comment.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:11.08Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\appsettings.json",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Api\\appsettings.json",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\appsettings.json",
+              "RelativeToolTip": "src\\ServiceDesk.Api\\appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2026-02-15T21:24:01.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Category.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Entities\\Category.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Domain\\Entities\\Category.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Entities\\Category.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Domain\\Entities\\Category.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:09.403Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "TicketStatus.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Enums\\TicketStatus.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Domain\\Enums\\TicketStatus.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Enums\\TicketStatus.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Domain\\Enums\\TicketStatus.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:07.127Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Role.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Enums\\Role.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Domain\\Enums\\Role.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Enums\\Role.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Domain\\Enums\\Role.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:04.726Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Priority.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Enums\\Priority.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Domain\\Enums\\Priority.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Domain\\Enums\\Priority.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Domain\\Enums\\Priority.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:32:02.776Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "ApplicationDbContext.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\Persistence\\ApplicationDbContext.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Infrastructure\\Persistence\\ApplicationDbContext.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\Persistence\\ApplicationDbContext.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Infrastructure\\Persistence\\ApplicationDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:31:52.704Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "TicketRepository.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\Repositories\\TicketRepository.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Infrastructure\\Repositories\\TicketRepository.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\Repositories\\TicketRepository.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Infrastructure\\Repositories\\TicketRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:31:35.35Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CategoryRepository.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\Repositories\\CategoryRepository.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Infrastructure\\Repositories\\CategoryRepository.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\Repositories\\CategoryRepository.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Infrastructure\\Repositories\\CategoryRepository.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:31:34.217Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DependencyInjection.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\DependencyInjection.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Infrastructure\\DependencyInjection.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Infrastructure\\DependencyInjection.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Infrastructure\\DependencyInjection.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:31:28.623Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\Program.cs",
+              "RelativeDocumentMoniker": "src\\ServiceDesk.Api\\Program.cs",
+              "ToolTip": "C:\\work\\ServiceDesk\\server\\src\\ServiceDesk.Api\\Program.cs",
+              "RelativeToolTip": "src\\ServiceDesk.Api\\Program.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-02-15T21:23:11.475Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 341,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e1b7d1f8-9b3c-49b1-8f4f-bfc63a88835d}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
