@@ -29,9 +29,14 @@
 - Role change takes effect after next login (new JWT)
 - displayName = ApplicationUser.DisplayName (custom field, added in Lab 3)
 
-## Ticket workflow (strict)
+## Security rules
+- Student: assignedToMe query param is ignored by server (server enforces own tickets only)
+- Student: sees ONLY own tickets; foreign ticket → 404 (not 403)
+- POST /api/tickets → Student only; Operator/Admin → 403
+- POST /api/tickets/{id}/close → Student only; Operator/Admin → 403
+- Admin: cannot create/comment tickets in MVP
 
-- Student всегда получает только свои тикеты; query-параметр assignedToMe для Student игнорируется сервером
+## Ticket workflow (strict)
 Statuses: New, InProgress, WaitingForStudent, Resolved, Closed, Rejected
 Priorities: Low, Medium, High
 
@@ -49,17 +54,17 @@ assign-to-me checks (in order):
 3. set assigneeId = currentOperatorId
 4. if was New → set InProgress
 
+POST /api/tickets/{id}/status checks (Operator only):
+1. if assigneeId != currentOperatorId → 403
+2. if requested status == current status → 400
+3. if transition is not allowed by workflow → 400
+Note: New → InProgress is ONLY via assign-to-me (status endpoint must reject it as invalid).
+
 reject checks (in order):
 1. status ∈ {New, InProgress, WaitingForStudent} else 400
 2. assigneeId != null && != currentOperator → 409
 3. if New && assigneeId==null → auto-assign currentOperator
-4. set Rejected + rejectedReason
-
-## Security rules
-- Student: sees ONLY own tickets; foreign ticket → 404 (not 403)
-- POST /api/tickets → Student only; Operator/Admin → 403
-- POST /api/tickets/{id}/close → Student only; Operator/Admin → 403
-- Admin: cannot create/comment tickets in MVP
+4. set Rejected + rejectedReason (reason is required)
 
 ## DTO contracts (always return nested objects, never bare ids)
 TicketResponse:
@@ -82,6 +87,12 @@ CommentResponse:
 - Operator: can create internal ONLY if assigneeId == currentOperatorId
 - Admin: cannot comment → 403
 
+## Seed data (Lab 05)
+- Provide DbInitializer / SeedData on app start (dev only).
+- Create: 1 Admin, 2 Operators, 3 Students
+- Create: 5 Categories (mix active/inactive)
+- Create: 15+ Tickets covering all statuses & priorities, some assigned, include WaitingForStudent and Rejected with reason.
+
 ## Frontend conventions
 - TanStack Query for ALL server state (useQuery / useMutation)
 - AuthContext: { user, role, isAuthenticated, login, logout, init }
@@ -89,4 +100,5 @@ CommentResponse:
 - RequireRole: wrong role → 403 page
 - UI states: PageLoading (Spin), PageEmpty, PageError (Alert/Result), PageValidation (Form errors), PageNotFound (Result 404)
 - Conditional buttons: show/hide based on role + status + assignee rules (never just disable without reason)
-- Internal toggle: show ONLY if Operator && assigneeId == currentOperatorId == currentOperatorId
+- Internal toggle: show ONLY if Operator && assigneeId == currentOperatorId
+- /queue/resolved: read-only monitoring for Operator; no actions (no assign/status/reject buttons)
