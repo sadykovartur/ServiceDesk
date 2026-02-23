@@ -1,0 +1,92 @@
+# Service Desk — Project Rules for Cursor AI
+
+## Stack
+- Backend: ASP.NET Core 8, ASP.NET Core Identity, EF Core 8, PostgreSQL, JWT
+- Frontend: React 18, TypeScript, Vite, Ant Design 5, TanStack Query v5, React Router v6
+- Tests: xUnit (backend)
+- Infra: Docker, GitHub Actions CI
+
+## Project structure
+/server                 — ASP.NET Core Web API + tests
+  /ServiceDesk.API
+  /ServiceDesk.API.Tests
+/client                 — Vite React app
+/http                   — .http files for API checks (final lab)
+/docs                   — course materials (labs, ADR, figma link)
+
+## Backend conventions
+- All API errors → ProblemDetails (RFC 7807)
+- HTTP codes: 400 (validation/business), 401, 403, 404, 409 (conflict/anti-steal)
+- Controllers are thin — business logic in services
+- EF Core: no lazy loading, explicit .Include()
+- Migrations in repo, never auto-migrate on startup
+- ILogger<T> for structured logging in services
+- GET /health → 200 (health check)
+
+## Roles & Auth
+- Roles: Student, Operator, Admin (exactly one per user)
+- JWT access token, stored in localStorage (MVP, no refresh)
+- Role change takes effect after next login (new JWT)
+- displayName = ApplicationUser.DisplayName (custom field, added in Lab 3)
+
+## Ticket workflow (strict)
+
+- Student всегда получает только свои тикеты; query-параметр assignedToMe для Student игнорируется сервером
+Statuses: New, InProgress, WaitingForStudent, Resolved, Closed, Rejected
+Priorities: Low, Medium, High
+
+New → InProgress: ONLY via assign-to-me
+InProgress → WaitingForStudent: Operator (assignee only)
+WaitingForStudent → InProgress: Operator (assignee only) OR auto on Student comment
+InProgress → Resolved: Operator (assignee only)
+WaitingForStudent → Resolved: Operator (assignee only)
+Resolved → Closed: Student (author only) via /close
+Any active → Rejected: Operator via /reject (with reason)
+
+assign-to-me checks (in order):
+1. status ∈ {New, InProgress, WaitingForStudent} else 400
+2. anti-steal: assigneeId != null && != currentOperator → 409
+3. set assigneeId = currentOperatorId
+4. if was New → set InProgress
+
+reject checks (in order):
+1. status ∈ {New, InProgress, WaitingForStudent} else 400
+2. assigneeId != null && != currentOperator → 409
+3. if New && assigneeId==null → auto-assign currentOperator
+4. set Rejected + rejectedReason
+
+## Security rules
+- Student: sees ONLY own tickets; foreign ticket → 404 (not 403)
+- POST /api/tickets → Student only; Operator/Admin → 403
+- POST /api/tickets/{id}/close → Student only; Operator/Admin → 403
+- Admin: cannot create/comment tickets in MVP
+
+## DTO contracts (always return nested objects, never bare ids)
+TicketResponse:
+  id, title, description, priority, status, createdAt, updatedAt, rejectedReason?
+  category: { id, name, isActive }
+  author: { id, displayName }
+  assignee?: { id, displayName }
+
+CommentResponse:
+  id, ticketId, text, isInternal, createdAt
+  author: { id, displayName }
+
+## Anti-necropost (comments)
+- Closed/Rejected → 400 for everyone
+- Resolved → Student cannot comment (400); only action is /close
+- Operator comment checks: 1) Closed/Rejected→400, 2) not assignee→403, 3) create
+
+## isInternal comments
+- Student: cannot create internal (server forces isInternal=false), cannot see isInternal=true
+- Operator: can create internal ONLY if assigneeId == currentOperatorId
+- Admin: cannot comment → 403
+
+## Frontend conventions
+- TanStack Query for ALL server state (useQuery / useMutation)
+- AuthContext: { user, role, isAuthenticated, login, logout, init }
+- RequireAuth: no token → /login
+- RequireRole: wrong role → 403 page
+- UI states: PageLoading (Spin), PageEmpty, PageError (Alert/Result), PageValidation (Form errors), PageNotFound (Result 404)
+- Conditional buttons: show/hide based on role + status + assignee rules (never just disable without reason)
+- Internal toggle: show ONLY if Operator && assigneeId == currentOperatorId == currentOperatorId
