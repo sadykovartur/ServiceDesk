@@ -32,6 +32,7 @@
 ## Security rules
 - Student: assignedToMe query param is ignored by server (server enforces own tickets only)
 - Student: sees ONLY own tickets; foreign ticket → 404 (not 403)
+- Admin: can GET all tickets (same as Operator), with filters
 - POST /api/tickets → Student only; Operator/Admin → 403
 - POST /api/tickets/{id}/close → Student only; Operator/Admin → 403
 - Admin: cannot create/comment tickets in MVP
@@ -66,6 +67,12 @@ reject checks (in order):
 3. if New && assigneeId==null → auto-assign currentOperator
 4. set Rejected + rejectedReason (reason is required)
 
+POST /api/tickets/{id}/close checks (Student only):
+1. if role is Operator/Admin → 403
+2. if foreign ticket → 404
+3. if status != Resolved → 400
+4. set Closed
+
 ## DTO contracts (always return nested objects, never bare ids)
 TicketResponse:
   id, title, description, priority, status, createdAt, updatedAt, rejectedReason?
@@ -78,6 +85,8 @@ CommentResponse:
   author: { id, displayName }
 
 ## Anti-necropost (comments)
+- WaitingForStudent + Student comment → auto-set status to InProgress (server side)
+- Auto-transition applies ONLY for Student comment; Operator comment does NOT auto-change status
 - Closed/Rejected → 400 for everyone
 - Resolved → Student cannot comment (400); only action is /close
 - Operator comment checks: 1) Closed/Rejected→400, 2) not assignee→403, 3) create
@@ -88,17 +97,21 @@ CommentResponse:
 - Admin: cannot comment → 403
 
 ## Seed data (Lab 05)
-- Provide DbInitializer / SeedData on app start (dev only).
+- Provide DbInitializer / SeedData on app start (dev only)
 - Create: 1 Admin, 2 Operators, 3 Students
 - Create: 5 Categories (mix active/inactive)
-- Create: 15+ Tickets covering all statuses & priorities, some assigned, include WaitingForStudent and Rejected with reason.
+- Create: 15+ Tickets covering all statuses & priorities, some assigned,
+  include WaitingForStudent and Rejected with reason
 
 ## Frontend conventions
 - TanStack Query for ALL server state (useQuery / useMutation)
 - AuthContext: { user, role, isAuthenticated, login, logout, init }
 - RequireAuth: no token → /login
 - RequireRole: wrong role → 403 page
-- UI states: PageLoading (Spin), PageEmpty, PageError (Alert/Result), PageValidation (Form errors), PageNotFound (Result 404)
-- Conditional buttons: show/hide based on role + status + assignee rules (never just disable without reason)
+- UI states: PageLoading (Spin), PageEmpty, PageError (Alert/Result),
+  PageValidation (Form errors), PageNotFound (Result 404)
+- Conditional buttons: show/hide based on role + status + assignee rules
+  (never just disable without reason)
 - Internal toggle: show ONLY if Operator && assigneeId == currentOperatorId
-- /queue/resolved: read-only monitoring for Operator; no actions (no assign/status/reject buttons)
+- /queue/resolved: read-only monitoring for Operator; no actions
+  (no assign/status/reject buttons)
