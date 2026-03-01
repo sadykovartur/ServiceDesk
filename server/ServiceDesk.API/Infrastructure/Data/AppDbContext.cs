@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using ServiceDesk.API.Models;
+using ServiceDesk.API.Domain;
 
-namespace ServiceDesk.API.Data;
+namespace ServiceDesk.API.Infrastructure.Data;
 
 public class AppDbContext : IdentityDbContext<ApplicationUser>
 {

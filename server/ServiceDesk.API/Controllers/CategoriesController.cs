@@ -1,10 +1,8 @@
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using ServiceDesk.API.Data;
+using ServiceDesk.API.Application.Services;
 using ServiceDesk.API.DTOs.Categories;
-using ServiceDesk.API.Models;
 
 namespace ServiceDesk.API.Controllers;
 
@@ -14,13 +12,11 @@ namespace ServiceDesk.API.Controllers;
 [Produces("application/json")]
 public class CategoriesController : ControllerBase
 {
-    private readonly AppDbContext _db;
-    private readonly ILogger<CategoriesController> _logger;
+    private readonly ICategoryService _categoryService;
 
-    public CategoriesController(AppDbContext db, ILogger<CategoriesController> logger)
+    public CategoriesController(ICategoryService categoryService)
     {
-        _db = db;
-        _logger = logger;
+        _categoryService = categoryService;
     }
 
     /// <summary>
@@ -33,26 +29,8 @@ public class CategoriesController : ControllerBase
     public async Task<ActionResult<IEnumerable<CategoryResponse>>> GetAll(
         [FromQuery] bool includeInactive = false)
     {
-        var role = User.FindFirstValue("role") ?? string.Empty;
-        var isStudentOrLower = role == "Student";
-
-        IQueryable<Category> query = _db.Categories;
-
-        if (isStudentOrLower || !includeInactive)
-        {
-            if (isStudentOrLower && includeInactive)
-            {
-                _logger.LogWarning("Student attempted to use includeInactive=true — flag ignored");
-            }
-            query = query.Where(c => c.IsActive);
-        }
-
-        var categories = await query
-            .OrderBy(c => c.Name)
-            .Select(c => new CategoryResponse(c.Id, c.Name, c.IsActive))
-            .ToListAsync();
-
-        return Ok(categories);
+        var isStudent = (User.FindFirstValue("role") ?? string.Empty) == "Student";
+        return Ok(await _categoryService.GetAllAsync(includeInactive, isStudent));
     }
 
     /// <summary>Create a new category. Admin only.</summary>
@@ -64,21 +42,8 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     public async Task<ActionResult<CategoryResponse>> Create([FromBody] CreateCategoryRequest request)
     {
-        var name = request.Name.Trim();
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return ValidationProblem(new ValidationProblemDetails
-            {
-                Errors = { ["name"] = ["Name must not be empty or whitespace."] }
-            });
-        }
-
-        var category = new Category { Name = name, IsActive = true };
-        _db.Categories.Add(category);
-        await _db.SaveChangesAsync();
-
-        var response = new CategoryResponse(category.Id, category.Name, category.IsActive);
-        return CreatedAtAction(nameof(GetAll), response);
+        var result = await _categoryService.CreateAsync(request);
+        return CreatedAtAction(nameof(GetAll), result);
     }
 
     /// <summary>Update category name. Admin only.</summary>
@@ -91,24 +56,7 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CategoryResponse>> Update(int id, [FromBody] UpdateCategoryRequest request)
     {
-        var category = await _db.Categories.FindAsync(id);
-        if (category is null)
-            return Problem(statusCode: StatusCodes.Status404NotFound, title: "Not Found",
-                detail: $"Category {id} not found.");
-
-        var name = request.Name.Trim();
-        if (string.IsNullOrWhiteSpace(name))
-        {
-            return ValidationProblem(new ValidationProblemDetails
-            {
-                Errors = { ["name"] = ["Name must not be empty or whitespace."] }
-            });
-        }
-
-        category.Name = name;
-        await _db.SaveChangesAsync();
-
-        return Ok(new CategoryResponse(category.Id, category.Name, category.IsActive));
+        return Ok(await _categoryService.UpdateAsync(id, request));
     }
 
     /// <summary>Toggle category active state. Admin only.</summary>
@@ -120,17 +68,6 @@ public class CategoriesController : ControllerBase
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<ActionResult<CategoryResponse>> SetActive(int id, [FromBody] SetActiveCategoryRequest request)
     {
-        var category = await _db.Categories.FindAsync(id);
-        if (category is null)
-            return Problem(statusCode: StatusCodes.Status404NotFound, title: "Not Found",
-                detail: $"Category {id} not found.");
-
-        category.IsActive = request.IsActive;
-        await _db.SaveChangesAsync();
-
-        _logger.LogInformation("Category {CategoryId} active state changed to {IsActive}",
-            category.Id, category.IsActive);
-
-        return Ok(new CategoryResponse(category.Id, category.Name, category.IsActive));
+        return Ok(await _categoryService.SetActiveAsync(id, request));
     }
 }

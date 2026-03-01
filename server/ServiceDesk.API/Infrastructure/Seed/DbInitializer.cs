@@ -1,8 +1,9 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using ServiceDesk.API.Models;
+using ServiceDesk.API.Domain;
+using ServiceDesk.API.Infrastructure.Data;
 
-namespace ServiceDesk.API.Data;
+namespace ServiceDesk.API.Infrastructure.Seed;
 
 public static class DbInitializer
 {

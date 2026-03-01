@@ -1,6 +1,6 @@
 using ServiceDesk.API.DTOs.Auth;
 
-namespace ServiceDesk.API.Services;
+namespace ServiceDesk.API.Application.Services;
 
 public interface IAuthService
 {

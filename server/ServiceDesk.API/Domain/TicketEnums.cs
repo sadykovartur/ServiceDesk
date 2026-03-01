@@ -1,4 +1,4 @@
-namespace ServiceDesk.API.Models;
+namespace ServiceDesk.API.Domain;
 
 public enum TicketStatus
 {

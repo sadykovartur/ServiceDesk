@@ -2,9 +2,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using ServiceDesk.API.Models;
+using ServiceDesk.API.Domain;
 
-namespace ServiceDesk.API.Services;
+namespace ServiceDesk.API.Infrastructure.Auth;
 
 public class TokenService : ITokenService
 {
