@@ -9,12 +9,12 @@ public static class DbInitializer
 
     private static readonly SeedUser[] Users =
     [
-        new("admin@demo.com",     "Admin123!",    "Admin",        "Admin"),
-        new("operator1@demo.com", "Operator123!", "Operator One", "Operator"),
-        new("operator2@demo.com", "Operator123!", "Operator Two", "Operator"),
-        new("student1@demo.com",  "Student123!",  "Student One",  "Student"),
-        new("student2@demo.com",  "Student123!",  "Student Two",  "Student"),
-        new("student3@demo.com",  "Student123!",  "Student Three","Student"),
+        new("admin@demo.com",     "Admin123!",    "Admin",         "Admin"),
+        new("operator1@demo.com", "Operator123!", "Operator One",  "Operator"),
+        new("operator2@demo.com", "Operator123!", "Operator Two",  "Operator"),
+        new("student1@demo.com",  "Student123!",  "Student One",   "Student"),
+        new("student2@demo.com",  "Student123!",  "Student Two",   "Student"),
+        new("student3@demo.com",  "Student123!",  "Student Three", "Student"),
     ];
 
     public static async Task SeedAsync(IServiceProvider services)
@@ -24,30 +24,38 @@ public static class DbInitializer
 
         foreach (var seed in Users)
         {
-            if (await userManager.FindByEmailAsync(seed.Email) is not null)
-                continue;
+            var user = await userManager.FindByEmailAsync(seed.Email);
 
-            var user = new ApplicationUser
+            if (user is null)
             {
-                UserName = seed.Email,
-                Email = seed.Email,
-                DisplayName = seed.DisplayName
-            };
+                user = new ApplicationUser
+                {
+                    UserName = seed.Email,
+                    Email = seed.Email,
+                    DisplayName = seed.DisplayName
+                };
 
-            var result = await userManager.CreateAsync(user, seed.Password);
-            if (!result.Succeeded)
-            {
-                var errors = string.Join(", ", result.Errors.Select(e => e.Description));
-                logger.LogError("Failed to seed user {Email}: {Errors}", seed.Email, errors);
-                continue;
+                var result = await userManager.CreateAsync(user, seed.Password);
+                if (!result.Succeeded)
+                {
+                    var errors = string.Join(", ", result.Errors.Select(e => e.Description));
+                    logger.LogError("Failed to seed user {Email}: {Errors}", seed.Email, errors);
+                    continue;
+                }
             }
 
-            var roleResult = await userManager.AddToRoleAsync(user, seed.Role);
-            if (!roleResult.Succeeded)
+            // Idempotent role assignment — runs even if user already existed
+            if (!await userManager.IsInRoleAsync(user, seed.Role))
             {
-                var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
-                logger.LogError("Failed to assign role {Role} to {Email}: {Errors}", seed.Role, seed.Email, errors);
-                continue;
+                var roleResult = await userManager.AddToRoleAsync(user, seed.Role);
+                if (!roleResult.Succeeded)
+                {
+                    var errors = string.Join(", ", roleResult.Errors.Select(e => e.Description));
+                    logger.LogError("Failed to assign role {Role} to {Email}: {Errors}", seed.Role, seed.Email, errors);
+                    continue;
+                }
+
+                logger.LogInformation("Assigned role {Role} to {Email}", seed.Role, seed.Email);
             }
 
             logger.LogInformation("Seeded user {Email} with role {Role}", seed.Email, seed.Role);

@@ -51,7 +51,9 @@ public class AuthController : ControllerBase
             ?? User.FindFirstValue("sub")
             ?? throw new InvalidOperationException("User ID claim is missing from a validated JWT.");
 
-        var response = await _authService.GetMeAsync(userId);
+        var role = User.FindFirstValue("role") ?? "Student";
+
+        var response = await _authService.GetMeAsync(userId, role);
         return Ok(response);
     }
 }
