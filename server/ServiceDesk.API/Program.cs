@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using ServiceDesk.API.Data;
+using ServiceDesk.API.Application.Services;
+using ServiceDesk.API.Domain;
+using ServiceDesk.API.Infrastructure.Auth;
+using ServiceDesk.API.Infrastructure.Data;
+using ServiceDesk.API.Infrastructure.Seed;
 using ServiceDesk.API.Middleware;
-using ServiceDesk.API.Models;
-using ServiceDesk.API.Services;
 
 JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
@@ -86,6 +88,9 @@ builder.Services.AddAuthorization();
 // Application services
 builder.Services.AddScoped<ITokenService, TokenService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IUserAdminService, UserAdminService>();
+builder.Services.AddScoped<ITicketService, TicketService>();
 
 // Controllers
 builder.Services.AddControllers();

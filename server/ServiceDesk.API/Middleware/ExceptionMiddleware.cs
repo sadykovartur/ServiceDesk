@@ -31,9 +31,11 @@ public class ExceptionMiddleware
     {
         var (statusCode, title) = exception switch
         {
-            BusinessException => (HttpStatusCode.BadRequest, "Bad Request"),
-            UnauthorizedException => (HttpStatusCode.Unauthorized, "Unauthorized"),
-            _ => (HttpStatusCode.InternalServerError, "Internal Server Error")
+            BusinessException      => (HttpStatusCode.BadRequest,          "Bad Request"),
+            UnauthorizedException  => (HttpStatusCode.Unauthorized,        "Unauthorized"),
+            ForbiddenException     => (HttpStatusCode.Forbidden,           "Forbidden"),
+            NotFoundException      => (HttpStatusCode.NotFound,            "Not Found"),
+            _                      => (HttpStatusCode.InternalServerError, "Internal Server Error")
         };
 
         if (statusCode == HttpStatusCode.InternalServerError)

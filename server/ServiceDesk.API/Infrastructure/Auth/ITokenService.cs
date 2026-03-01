@@ -1,6 +1,6 @@
-using ServiceDesk.API.Models;
+using ServiceDesk.API.Domain;
 
-namespace ServiceDesk.API.Services;
+namespace ServiceDesk.API.Infrastructure.Auth;
 
 public interface ITokenService
 {

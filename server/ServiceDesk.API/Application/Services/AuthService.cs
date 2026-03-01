@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Identity;
+using ServiceDesk.API.Domain;
 using ServiceDesk.API.DTOs.Auth;
 using ServiceDesk.API.Exceptions;
-using ServiceDesk.API.Models;
+using ServiceDesk.API.Infrastructure.Auth;
 
-namespace ServiceDesk.API.Services;
+namespace ServiceDesk.API.Application.Services;
 
 public class AuthService : IAuthService
 {
@@ -65,7 +66,7 @@ public class AuthService : IAuthService
         }
 
         var roles = await _userManager.GetRolesAsync(user);
-        _logger.LogWarning(">>> Login {Email} roles: [{Roles}]", 
+        _logger.LogWarning(">>> Login {Email} roles: [{Roles}]",
             user.Email, string.Join(", ", roles));
         var role = roles.FirstOrDefault() ?? "Student";
 

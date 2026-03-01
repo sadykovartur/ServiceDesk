@@ -1,0 +1,177 @@
+### ServiceDesk — Tickets API
+### Base URL and tokens — adjust to match your running instance.
+
+@base = http://localhost:5000
+@studentToken  = <paste student1 JWT here>
+@operatorToken = <paste operator1 JWT here>
+@adminToken    = <paste admin JWT here>
+
+### ── Auth helpers (get tokens) ─────────────────────────────────────────────
+
+### Login as student1
+# @name loginStudent
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "student1@demo.com",
+  "password": "Student123!"
+}
+
+### Login as operator1
+# @name loginOperator
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "operator1@demo.com",
+  "password": "Operator123!"
+}
+
+### Login as admin
+# @name loginAdmin
+POST {{base}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "admin@demo.com",
+  "password": "Admin123!"
+}
+
+### ── POST /api/tickets ───────────────────────────────────────────────────────
+
+### Create ticket (Student only — expects 201)
+POST {{base}}/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{studentToken}}
+
+{
+  "title": "My laptop won't turn on",
+  "description": "Pressing the power button produces no response. Battery is charged.",
+  "priority": "High",
+  "categoryId": 1
+}
+
+### Create ticket as Operator — expects 403
+POST {{base}}/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{operatorToken}}
+
+{
+  "title": "Should fail",
+  "description": "Operators cannot create tickets.",
+  "priority": "Low",
+  "categoryId": 1
+}
+
+### Create ticket — missing title (expects 400)
+POST {{base}}/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{studentToken}}
+
+{
+  "title": "   ",
+  "description": "Whitespace-only title.",
+  "priority": "Medium",
+  "categoryId": 1
+}
+
+### Create ticket — invalid priority (expects 400)
+POST {{base}}/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{studentToken}}
+
+{
+  "title": "Bad priority",
+  "description": "Priority is not a valid enum value.",
+  "priority": "Critical",
+  "categoryId": 1
+}
+
+### Create ticket — inactive category (expects 400)
+### Category 5 "Security Concerns" is seeded as inactive
+POST {{base}}/api/tickets
+Content-Type: application/json
+Authorization: Bearer {{studentToken}}
+
+{
+  "title": "Security concern",
+  "description": "Trying to use an inactive category.",
+  "priority": "Low",
+  "categoryId": 5
+}
+
+### ── GET /api/tickets ────────────────────────────────────────────────────────
+
+### List all tickets — Student sees only own
+GET {{base}}/api/tickets
+Authorization: Bearer {{studentToken}}
+
+### List all tickets — Operator sees everything
+GET {{base}}/api/tickets
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — filter by status=New
+GET {{base}}/api/tickets?status=New
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — filter by status=Rejected
+GET {{base}}/api/tickets?status=Rejected
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — filter by priority=High
+GET {{base}}/api/tickets?priority=High
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — filter by category 2 (Software Issues)
+GET {{base}}/api/tickets?categoryId=2
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — search by title keyword
+GET {{base}}/api/tickets?search=vpn
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — assigned to current operator
+GET {{base}}/api/tickets?assignedToMe=true
+Authorization: Bearer {{operatorToken}}
+
+### List tickets — assignedToMe ignored for Student (returns own tickets)
+GET {{base}}/api/tickets?assignedToMe=true
+Authorization: Bearer {{studentToken}}
+
+### Pagination — page 1, pageSize 5
+GET {{base}}/api/tickets?page=1&pageSize=5
+Authorization: Bearer {{operatorToken}}
+
+### Pagination — page 2, pageSize 5
+GET {{base}}/api/tickets?page=2&pageSize=5
+Authorization: Bearer {{operatorToken}}
+
+### Combined filters — InProgress + High priority
+GET {{base}}/api/tickets?status=InProgress&priority=High
+Authorization: Bearer {{operatorToken}}
+
+### Admin — list all tickets
+GET {{base}}/api/tickets
+Authorization: Bearer {{adminToken}}
+
+### No token — expects 401
+GET {{base}}/api/tickets
+
+### ── GET /api/tickets/{id} ───────────────────────────────────────────────────
+
+### Get ticket #1 as Operator (any ticket visible)
+GET {{base}}/api/tickets/1
+Authorization: Bearer {{operatorToken}}
+
+### Get ticket #1 as its author (student1) — expects 200
+GET {{base}}/api/tickets/1
+Authorization: Bearer {{studentToken}}
+
+### Get a ticket that belongs to student2, accessed as student1 — expects 404
+GET {{base}}/api/tickets/2
+Authorization: Bearer {{studentToken}}
+
+### Get non-existent ticket — expects 404
+GET {{base}}/api/tickets/9999
+Authorization: Bearer {{operatorToken}}
