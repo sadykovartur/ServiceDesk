@@ -71,4 +71,69 @@ public class TicketsController : ControllerBase
         var role   = User.FindFirstValue("role") ?? string.Empty;
         return Ok(await _ticketService.GetByIdAsync(id, userId, role));
     }
+
+    /// <summary>
+    /// Assign ticket to the current operator.
+    /// Promotes status from New → InProgress automatically.
+    /// Anti-steal: 409 if already assigned to a different operator.
+    /// </summary>
+    [HttpPost("{id:int}/assign-to-me")]
+    [Authorize(Roles = "Operator")]
+    [ProducesResponseType(typeof(TicketResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<TicketResponse>> AssignToMe(int id)
+    {
+        var operatorId = User.FindFirstValue("sub")!;
+        return Ok(await _ticketService.AssignToMeAsync(id, operatorId));
+    }
+
+    /// <summary>
+    /// Change ticket status. Operator must be the assignee.
+    /// Allowed transitions: InProgress ↔ WaitingForStudent, InProgress/WaitingForStudent → Resolved.
+    /// New → InProgress is NOT allowed here; use assign-to-me instead.
+    /// </summary>
+    [HttpPost("{id:int}/status")]
+    [Authorize(Roles = "Operator")]
+    [ProducesResponseType(typeof(TicketResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    public async Task<ActionResult<TicketResponse>> ChangeStatus(int id, [FromBody] ChangeStatusRequest request)
+    {
+        var operatorId = User.FindFirstValue("sub")!;
+        return Ok(await _ticketService.ChangeStatusAsync(id, operatorId, request.Status));
+    }
+
+    /// <summary>
+    /// Reject a ticket with a mandatory reason.
+    /// Anti-steal: 409 if assigned to a different operator.
+    /// Auto-assigns if New with no assignee.
+    /// </summary>
+    [HttpPost("{id:int}/reject")]
+    [Authorize(Roles = "Operator")]
+    [ProducesResponseType(typeof(TicketResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status409Conflict)]
+    public async Task<ActionResult<TicketResponse>> Reject(int id, [FromBody] RejectRequest request)
+    {
+        var operatorId = User.FindFirstValue("sub")!;
+        var reason     = request.Reason?.Trim() ?? string.Empty;
+        if (string.IsNullOrWhiteSpace(reason))
+            return BadRequest(new ProblemDetails
+            {
+                Status   = StatusCodes.Status400BadRequest,
+                Title    = "Bad Request",
+                Detail   = "Reject reason is required and must not be blank.",
+                Instance = HttpContext.Request.Path
+            });
+        return Ok(await _ticketService.RejectAsync(id, operatorId, reason));
+    }
 }
