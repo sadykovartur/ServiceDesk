@@ -1,3 +1,5 @@
+import TicketQueueTable from '../../components/TicketQueueTable';
+
 export default function QueueNewPage() {
-  return <div>QueueNewPage</div>;
+  return <TicketQueueTable title="New Tickets" defaultStatus="New" />;
 }

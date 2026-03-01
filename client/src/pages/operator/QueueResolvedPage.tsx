@@ -1,3 +1,5 @@
+import TicketQueueTable from '../../components/TicketQueueTable';
+
 export default function QueueResolvedPage() {
-  return <div>QueueResolvedPage</div>;
+  return <TicketQueueTable title="Resolved Tickets" defaultStatus="Resolved" />;
 }

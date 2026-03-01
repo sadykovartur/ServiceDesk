@@ -75,4 +75,9 @@ export const ticketsApi = {
     apiClient.get<PagedResult<TicketResponse>>(`/api/tickets${buildQuery(params)}`),
   getById: (id: string) => apiClient.get<TicketResponse>(`/api/tickets/${id}`),
   create: (data: CreateTicketRequest) => apiClient.post<TicketResponse>('/api/tickets', data),
+  assignToMe: (id: string) => apiClient.post<void>(`/api/tickets/${id}/assign-to-me`),
+  changeStatus: (id: string, status: TicketStatus) =>
+    apiClient.post<void>(`/api/tickets/${id}/status`, { status }),
+  rejectTicket: (id: string, reason: string) =>
+    apiClient.post<void>(`/api/tickets/${id}/reject`, { reason }),
 };
