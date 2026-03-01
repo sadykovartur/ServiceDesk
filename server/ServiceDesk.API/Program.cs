@@ -1,3 +1,4 @@
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -10,6 +11,8 @@ using ServiceDesk.API.Middleware;
 using ServiceDesk.API.Models;
 using ServiceDesk.API.Services;
 
+JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Database
@@ -20,8 +23,10 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Identity
-builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+// Identity — use AddIdentityCore so it does NOT override the default auth scheme
+// to IdentityConstants.ApplicationScheme (cookies). AddIdentity<> would cause
+// [Authorize(Roles="...")] to evaluate against cookie auth instead of JWT.
+builder.Services.AddIdentityCore<ApplicationUser>(options =>
 {
     options.Password.RequireDigit = true;
     options.Password.RequiredLength = 6;
@@ -29,21 +34,20 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.Password.RequireUppercase = false;
     options.User.RequireUniqueEmail = true;
 })
+.AddRoles<IdentityRole>()
 .AddEntityFrameworkStores<AppDbContext>()
-.AddDefaultTokenProviders();
+.AddDefaultTokenProviders()
+.AddSignInManager();
 
-// JWT Authentication
+// JWT Authentication — registered as the one and only default scheme.
 var jwtKey = builder.Configuration["Jwt:Key"]
     ?? Environment.GetEnvironmentVariable("JWT_KEY")
     ?? throw new InvalidOperationException("Jwt:Key is not configured.");
 
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-})
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer(options =>
 {
+    options.MapInboundClaims = false;
     options.TokenValidationParameters = new TokenValidationParameters
     {
         ValidateIssuer = true,
@@ -148,6 +152,33 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Intercept bodyless 403s from the authorization middleware and emit ProblemDetails.
+// The 403 status is set but headers are not yet flushed (HasStarted == false), so
+// we can still rewrite the response. Also satisfies the ILogger Warning requirement.
+app.Use(async (context, next) =>
+{
+    await next();
+
+    if (context.Response.StatusCode == StatusCodes.Status403Forbidden && !context.Response.HasStarted)
+    {
+        var logger = context.RequestServices
+            .GetRequiredService<ILogger<Program>>();
+
+        logger.LogWarning("403 Forbidden: {Method} {Path} — insufficient role",
+            context.Request.Method, context.Request.Path);
+
+        context.Response.ContentType = "application/problem+json";
+        var problem = new ProblemDetails
+        {
+            Status = StatusCodes.Status403Forbidden,
+            Title = "Forbidden",
+            Detail = "You do not have permission to perform this action.",
+            Instance = context.Request.Path
+        };
+        await context.Response.WriteAsJsonAsync(problem);
+    }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();

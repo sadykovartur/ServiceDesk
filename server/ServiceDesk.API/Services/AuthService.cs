@@ -65,6 +65,8 @@ public class AuthService : IAuthService
         }
 
         var roles = await _userManager.GetRolesAsync(user);
+        _logger.LogWarning(">>> Login {Email} roles: [{Roles}]", 
+            user.Email, string.Join(", ", roles));
         var role = roles.FirstOrDefault() ?? "Student";
 
         var token = _tokenService.GenerateToken(user, role);
@@ -73,16 +75,13 @@ public class AuthService : IAuthService
         return new AuthResponse(token);
     }
 
-    public async Task<MeResponse> GetMeAsync(string userId)
+    public async Task<MeResponse> GetMeAsync(string userId, string role)
     {
         var user = await _userManager.FindByIdAsync(userId);
         if (user is null)
         {
             throw new UnauthorizedException("User not found.");
         }
-
-        var roles = await _userManager.GetRolesAsync(user);
-        var role = roles.FirstOrDefault() ?? "Student";
 
         return new MeResponse(user.Id, user.Email!, user.DisplayName, role);
     }
