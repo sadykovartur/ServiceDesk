@@ -162,7 +162,7 @@ export default function CategoriesPage() {
         onCancel={handleModalCancel}
         okButtonProps={{ disabled: modalMutationPending, loading: modalMutationPending }}
         cancelButtonProps={{ disabled: modalMutationPending }}
-        destroyOnClose
+        destroyOnHidden
       >
         <Form form={form} layout="vertical">
           <Form.Item
