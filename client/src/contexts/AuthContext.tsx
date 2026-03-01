@@ -1,48 +1,106 @@
-import { createContext, useContext, useState, ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { apiClient, ApiError } from '../api/client';
+import PageLoading from '../components/PageLoading';
 
 export type Role = 'Student' | 'Operator' | 'Admin';
 
 export interface AuthUser {
   id: string;
+  email: string;
   displayName: string;
+}
+
+interface MeResponse {
+  id: string;
+  email: string;
+  displayName: string;
+  role: Role;
+}
+
+interface TokenResponse {
+  accessToken: string;
 }
 
 interface AuthContextValue {
   user: AuthUser | null;
   role: Role | null;
   isAuthenticated: boolean;
-  login: (token: string, user: AuthUser, role: Role) => void;
-  logout: () => void;
-  init: () => void;
+  login(email: string, password: string): Promise<void>;
+  register(displayName: string, email: string, password: string): Promise<void>;
+  logout(): void;
+  init(): Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [token, setToken] = useState<string | null>(() => localStorage.getItem('token'));
   const [user, setUser] = useState<AuthUser | null>(null);
   const [role, setRole] = useState<Role | null>(null);
-
-  const login = (token: string, user: AuthUser, role: Role) => {
-    localStorage.setItem('token', token);
-    setToken(token);
-    setUser(user);
-    setRole(role);
-  };
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const logout = () => {
     localStorage.removeItem('token');
-    setToken(null);
     setUser(null);
     setRole(null);
   };
 
-  const init = () => {
-    // stub: will read token from localStorage and restore session in Lab 3
+  const init = async (): Promise<void> => {
+    const token = localStorage.getItem('token');
+    if (!token) return;
+    try {
+      const me = await apiClient.get<MeResponse>('/api/auth/me');
+      setUser({ id: me.id, email: me.email, displayName: me.displayName });
+      setRole(me.role);
+    } catch (err) {
+      if (err instanceof ApiError || err instanceof TypeError) {
+        logout();
+      }
+    }
   };
 
+  useEffect(() => {
+    init().finally(() => setIsInitialized(true));
+    // runs once on mount
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const login = async (email: string, password: string): Promise<void> => {
+    const { accessToken } = await apiClient.post<TokenResponse>('/api/auth/login', {
+      email,
+      password,
+    });
+    localStorage.setItem('token', accessToken);
+    await init();
+  };
+
+  const register = async (
+    displayName: string,
+    email: string,
+    password: string,
+  ): Promise<void> => {
+    const { accessToken } = await apiClient.post<TokenResponse>('/api/auth/register', {
+      displayName,
+      email,
+      password,
+    });
+    localStorage.setItem('token', accessToken);
+    await init();
+  };
+
+  if (!isInitialized) return <PageLoading />;
+
   return (
-    <AuthContext.Provider value={{ user, role, isAuthenticated: Boolean(token), login, logout, init }}>
+    <AuthContext.Provider
+      value={{
+        user,
+        role,
+        isAuthenticated: Boolean(user),
+        login,
+        register,
+        logout,
+        init,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   );

@@ -11,20 +11,28 @@ Composer → вставить промпт ниже, добавить @.cursorru
 ## Prompt (Composer)
 ```text
 Create ASP.NET Core 8 Web API project in server/ServiceDesk.API with:
-- ASP.NET Core Identity + EF Core 8, PostgreSQL (Npgsql), connection string via env
-- ApplicationUser extends IdentityUser, add custom field: string DisplayName
-- JWT: access token, role in claim "role", no refresh token
-- Endpoints:
-  POST /api/auth/register  body: { email, password, displayName } → 200 { accessToken } or 400
-  POST /api/auth/login     body: { email, password } → 200 { accessToken } or 400/401
-  GET  /api/auth/me        → 200 { id, email, displayName, role } or 401
-  GET  /health             → 200 "Healthy"
-- Global Exception Middleware → ProblemDetails for all unhandled exceptions
-- Swagger with Bearer authorization
-  Auth: document 400/401/403
-  Tickets/Comments/Operator ops: document 400/401/403/404/409
-  ProblemDetails on all error codes
-- EF Core migration: initial (Identity tables + DisplayName field)
+- ASP.NET Core Identity + EF Core 8 + PostgreSQL (Npgsql), connection string via env
+- ApplicationUser extends IdentityUser; add field string DisplayName
+- JWT access token (no refresh); include userId and role claims (claim type "role")
+- Ensure roles exist on app start (dev): Student, Operator, Admin
+- On register: create user + assign default role Student
+
+Endpoints:
+POST /api/auth/register body: { email, password, displayName } → 200 { accessToken } or 400 (ProblemDetails)
+POST /api/auth/login    body: { email, password } → 200 { accessToken } or 400/401 (ProblemDetails)
+GET  /api/auth/me       (Bearer) → 200 { id, email, displayName, role } or 401
+GET  /health            → 200 "Healthy"
+
+Error handling:
+- Global exception middleware: return ProblemDetails for unhandled exceptions
+- Use ProblemDetails for validation/business errors as well
+
+Swagger:
+- Add Bearer auth
+- Document relevant codes on auth endpoints: 200/400/401 (+ ProblemDetails on errors)
+
+EF Core:
+- Create initial migration (Identity tables + DisplayName)
 
 See @.cursorrules for ProblemDetails and JWT conventions.
 ```
