@@ -10,15 +10,36 @@ Composer → вставить промпт ниже, добавить @.cursorru
 
 ## Prompt (Composer)
 ```text
-Implement auth in @client using @.cursorrules conventions:
-- /login page: AntD Form, fields: Email + Password, Submit, link to /register
-- /register page: AntD Form, fields: DisplayName + Email + Password + Confirm Password, Submit, link to /login
-- Complete AuthContext:
-  init(): if token in localStorage → GET /api/auth/me → set user/role/isAuthenticated
-  login(email, password): POST /api/auth/login → save token → set state
-  logout(): clear localStorage → reset state
-- Hook up RequireAuth and RequireRole to real AuthContext
-- After login: Student → /tickets, Operator → /queue/new, Admin → /admin/categories
+Implement real auth in @client using @.cursorrules conventions. Replace any demo-login.
+
+1) API client
+- Create a small API helper (fetch or axios) with base URL (Vite env or relative /api)
+- Attach Authorization: Bearer <token> when token exists
+- Handle 401 by clearing token and redirecting to /login when appropriate
+
+2) Pages
+- /login: AntD Form (Email, Password). Submit calls auth.login(email,password). Link to /register.
+- /register: AntD Form (DisplayName, Email, Password, Confirm Password). Submit calls /api/auth/register and stores token. Link to /login.
+- Show errors:
+  - 400 validation → PageValidation (or Form.Item errors + Alert)
+  - network/500 → PageError
+
+3) AuthContext
+- token is source of truth (already in Lab 2): token state synced with localStorage
+- init(): if token exists → GET /api/auth/me → set user/role; if fails 401 → logout
+- login(email,password): POST /api/auth/login → save token → await init()
+- register(displayName,email,password): POST /api/auth/register → save token → await init()
+- logout(): clear token from state + localStorage + reset user/role
+
+4) Guards + redirect
+- RequireAuth uses isAuthenticated (or token) and redirects to /login
+- After successful login/register:
+  Student → /tickets
+  Operator → /queue/new
+  Admin → /admin/categories
+
+Keep existing routes/layout; do not implement tickets/admin pages yet beyond stubs.
+At the end ensure: npm run build passes (0 TS errors).
 
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 ```

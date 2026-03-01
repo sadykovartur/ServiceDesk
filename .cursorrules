@@ -29,6 +29,13 @@
 - Role change takes effect after next login (new JWT)
 - displayName = ApplicationUser.DisplayName (custom field, added in Lab 3)
 
+## Lab 03 (Auth) requirements
+- Global Exception Middleware: catch unhandled exceptions and return ProblemDetails consistently (RFC 7807).
+- Swagger/OpenAPI (Development): enable Swagger UI, configure Bearer auth, and document auth endpoints response codes (200/400/401/403) + ProblemDetails on errors.
+- Register behavior: on successful POST /api/auth/register assign default role Student and return { accessToken } (JWT).
+- displayName: use ApplicationUser.DisplayName — decision fixed in "Roles & Auth" section above.
+  Record in ADR.md (Lab 08).
+
 ## Security rules
 - Student: assignedToMe query param is ignored by server (server enforces own tickets only)
 - Student: sees ONLY own tickets; foreign ticket → 404 (not 403)
@@ -98,14 +105,20 @@ CommentResponse:
 
 ## Seed data (Lab 05)
 - Provide DbInitializer / SeedData on app start (dev only)
-- Create: 1 Admin, 2 Operators, 3 Students
+- Seed users (check by email, idempotent):
+    admin@demo.com / Admin123! → Admin
+    operator1@demo.com / Operator123! → Operator
+    operator2@demo.com / Operator123! → Operator
+    student1@demo.com / Student123! → Student
+    student2@demo.com / Student123! → Student
+    student3@demo.com / Student123! → Student
 - Create: 5 Categories (mix active/inactive)
 - Create: 15+ Tickets covering all statuses & priorities, some assigned,
   include WaitingForStudent and Rejected with reason
 
 ## Frontend conventions
 - TanStack Query for ALL server state (useQuery / useMutation)
-- AuthContext: { user, role, isAuthenticated, login, logout, init }
+- AuthContext: { user, role, isAuthenticated, login, register, logout, init }
 - RequireAuth: no token → /login
 - RequireRole: wrong role → 403 page
 - UI states: PageLoading (Spin), PageEmpty, PageError (Alert/Result),
